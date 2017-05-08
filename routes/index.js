@@ -1,5 +1,5 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const coffee = require('../modules/smartCoffee');
 
 /* GET home page. */
@@ -21,5 +21,10 @@ router.get('/coffee/turnPower', function(req, res, next) {
 router.get('/coffee/brew', function(req, res, next) {
     coffee.makeCoffee();
     res.render('index', { title: 'Make Coffee' });
+});
+router.get('/coffee/status', function(req, res, next) {
+    coffee.getStatus().then(data => {
+        res.json(data);
+    });
 });
 module.exports = router;
