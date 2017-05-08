@@ -1,12 +1,42 @@
 extends layout
 
-block content
-  h1= title
-  p Welcome to #{title}
 
-  a(href="/coffee/on") On
-  br
-  a(href="/coffee/off") OFF
-  br
-  a(href="/coffee/brew") Brew
+block content
+  .coffee.text-center(ng-controller="CoffeeCtrl")
+
+    .row
+      .col-md-2
+      .col.box
+        .row(ng-hide="coffeeMachineActive")
+          .col.box(ng-click="coffeeMachineWarming || turnCoffeeMaschine()")
+            h2.ion-power
+            p.small Kaffeemaschine
+            p(ng-hide="coffeeMachineWarming")
+              strong Einschalten
+            .div(ng-show="coffeeMachineWarming")
+              p
+                strong Wird erhitzt
+              .progress.coffeeMachine
+                .progress-bar(role='progressbar',ng-style="{ 'width' : getPercentage()+'%'}", aria-valuenow='100', aria-valuemin='0', aria-valuemax='100')
+
+        .row(ng-show="coffeeMachineActive")
+          .col.box(ng-click="turnCoffeeMaschine()")
+            h2.ion-power
+            p.small Kaffeemaschine
+              p
+                strong Ausschalten
+
+          .col.box(ng-click="coffeeInProcess || makeCoffee()")
+            h2.ion-coffee
+            p.small Kleine Tasse
+            p(ng-hide="coffeeInProcess")
+              strong brühen
+            .div(ng-show="coffeeInProcess")
+              p
+                strong Wird zubereitet
+              .progress.coffeeMachine
+                .progress-bar(role='progressbar',ng-style="{ 'width' : getPercentageBrew()+'%'}", aria-valuenow='100', aria-valuemin='0', aria-valuemax='100')
+
+      .col-md-2
+
 

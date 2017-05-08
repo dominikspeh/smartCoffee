@@ -1,8 +1,162 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
+.btn {
+  margin-right: 10px;
+  cursor: pointer;
+  border-color: currentColor; }
+
+.btn:hover {
+  border-color: currentColor !important; }
+
+.btn-primary {
+  color: white;
+  background-color: #34495e; }
+  .btn-primary i {
+    color: white; }
+
+.btn-primary:hover {
+  background-color: #10161c; }
+
+.btn-warning {
+  color: white;
+  background-color: #1abc9c; }
+  .btn-warning i {
+    color: white; }
+
+.btn-warning:hover {
+  background-color: #0e6252; }
+
+body, html {
+  height: 100%;
+  width: 100%;
+  padding-left: 60px;
+  overflow: hidden;
+  background-color: #ecf0f1; }
+
+* {
+  color: #7f8c8d; }
 
 a {
-  color: #00B7FF;
-}
+  color: #1abc9c; }
+
+.table tbody tr:first-child {
+  margin-top: 10px; }
+.table .btn {
+  margin-top: -10px; }
+
+.navigation {
+  position: fixed;
+  border-left: 1px solid white;
+  z-index: 99;
+  left: 0;
+  height: 100vh;
+  width: 120px;
+  top: 0;
+  background-color: #34495e;
+  text-align: center; }
+  .navigation .back {
+    position: absolute;
+    top: 67px;
+    font-size: 25px; }
+  .navigation i {
+    font-size: 42px;
+    width: 100%;
+    color: white;
+    padding: 20px 0;
+    cursor: pointer;
+    transition: all 1s;
+    display: block;
+    border-bottom: 1px solid white; }
+  .navigation .active {
+    background-color: white;
+    color: #34495e; }
+
+.box {
+  background-color: white;
+  margin: 10px;
+  padding: 20px;
+  border: 1px solid #bdc3c7; }
+  .box p {
+    margin: 0; }
+  .box h5 {
+    margin-bottom: 5px; }
+
+.box.active {
+  background-color: #bdc3c7; }
+
+.card {
+  margin-bottom: 10px; }
+
+.card-header a {
+  display: block;
+  padding: 10px 0; }
+
+.coffee h1 {
+  font-size: 52px; }
+
+.weather {
+  margin-top: 20px; }
+  .weather p {
+    white-space: nowrap; }
+  .weather i {
+    font-size: 40px; }
+  .weather .owf-800-d {
+    color: #f1c40f; }
+  .weather .owf-801 {
+    color: #f1c40f; }
+  .weather .time {
+    font-size: 12px; }
+
+.coffeeMachine {
+  margin-top: 10px; }
+  .coffeeMachine .progress-bar {
+    background-color: #1abc9c;
+    height: 3px; }
+
+.sockets .active {
+  background-color: #f1c40f;
+  border: white; }
+  .sockets .active * {
+    color: white; }
+.sockets .status i {
+  font-size: 40px; }
+
+.songs {
+  overflow: auto;
+  transition: all 1s; }
+  .songs i {
+    margin: 0 20px 0 0; }
+  .songs .currentPlayback {
+    background-color: #1abc9c; }
+    .songs .currentPlayback i, .songs .currentPlayback span {
+      color: white; }
+  .songs .cover {
+    object-fit: cover;
+    width: 100%;
+    height: 260px; }
+  .songs h5 {
+    margin-top: 50px; }
+  .songs .stopAll {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2; }
+  .songs .controls {
+    position: absolute;
+    bottom: 16px;
+    width: 100%; }
+    .songs .controls .btn {
+      padding: 20px 30px; }
+    .songs .controls i {
+      margin: 0 10px; }
+  .songs .progress {
+    margin: 30px 0 20px 0; }
+    .songs .progress .progress-bar {
+      background-color: #1abc9c; }
+
+.songs.smallList {
+  min-height: 300px !important; }
+
+.songs.open {
+  min-height: 300px !important;
+  overflow: hidden; }
+
+/*# sourceMappingURL=style.css.map */
