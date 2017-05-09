@@ -1,12 +1,17 @@
 angular.module('Coffee', [])
     .controller('CoffeeCtrl', function($scope, $http, $timeout, $interval) {
 
+        getStatus();
+
         $scope.coffeeMachineActive = false;
         $scope.turnCoffeeMaschine = function () {
+            $scope.blocked = true;
+
             $http.get('/coffee/turnPower', {
             })
                 .then(
                     function(response){
+
                         if(!$scope.coffeeMachineActive){
                             $scope.coffeeMachineWarming = true;
 
@@ -20,14 +25,21 @@ angular.module('Coffee', [])
                             };
 
                             $timeout(function () {
+                                getStatus();
                                 $scope.coffeeMachineActive = true;
                                 $scope.coffeeMachineWarming = false;
+                                $scope.blocked = false;
+
                                 $interval.cancel()
                             },60000)
 
                         }
                         else {
                             $scope.coffeeMachineActive = false;
+                            $timeout(function () {
+                                getStatus();
+                            },1000)
+
                         }
 
                     },
@@ -55,6 +67,7 @@ angular.module('Coffee', [])
                             $scope.coffeeInProcess = false;
                             $interval.cancel();
                             $scope.statusBrew = 0;
+                            getStatus();
                         },20000)
 
                     },
@@ -62,6 +75,15 @@ angular.module('Coffee', [])
                         console.log("error")
                     }
                 );
+        };
+
+       function getStatus() {
+            $http.get('/coffee/activities').then(result => {
+                $scope.actions = result.data
+            });
+           $http.get('/coffee/count').then(result => {
+               $scope.coffeeCounter = result.data
+           });
         };
 
     });

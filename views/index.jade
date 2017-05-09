@@ -8,7 +8,7 @@ block content
       .col-md-2
       .col.box
         .row(ng-hide="coffeeMachineActive")
-          .col.box(ng-click="coffeeMachineWarming || turnCoffeeMaschine()")
+          .col.box(ng-click="(coffeeMachineWarming || blocked) || turnCoffeeMaschine()")
             h2.ion-power
             p.small Kaffeemaschine
             p(ng-hide="coffeeMachineWarming")
@@ -36,7 +36,22 @@ block content
                 strong Wird zubereitet
               .progress.coffeeMachine
                 .progress-bar(role='progressbar',ng-style="{ 'width' : getPercentageBrew()+'%'}", aria-valuenow='100', aria-valuemin='0', aria-valuemax='100')
+      .col.box
+        .row
+          .col
+              .status(ng-repeat="action in actions | limitTo:-3 | orderBy:'createdAt':true")
+                p
+                  strong {{action.action}}
+                time.small {{action.createdAt | date:'dd.MM.yyyy - HH:mm'}} Uhr
 
       .col-md-2
+
+    .row
+      .col-md-2
+      .col.box
+        h2 Stats
+        p.lead Total coffees: {{coffeeCounter.drunkenCoffee}}
+      .col-md-2
+
 
 

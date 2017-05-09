@@ -27,4 +27,14 @@ router.get('/coffee/status', function(req, res, next) {
         res.json(data);
     });
 });
+router.get('/coffee/activities', function(req, res, next) {
+    coffee.getActivities().then(data => {
+        res.json(data);
+    });
+});
+router.get('/coffee/count', function(req, res, next) {
+    coffee.countCoffees().then(data => {
+        res.json(data);
+    });
+});
 module.exports = router;

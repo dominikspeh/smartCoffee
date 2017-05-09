@@ -2,6 +2,7 @@ const Gpio = require('onoff').Gpio;
 const power = new Gpio(17, 'out');
 const brewing = new Gpio(18, 'out');
 const smartCoffee = require('../models/smartCoffee');
+const activities = require('../models/activities');
 
 function turnPower() {
     return new Promise(resolve => {
@@ -25,13 +26,13 @@ function turnPower() {
                 }).then(result => {
 
                     if(status){
-                        logActivty('Power on').then(function () {
+                        logActivity('Power on').then(function () {
                             resolve(result);
 
                         })
                     }
                     else {
-                        logActivty('Power off').then(function () {
+                        logActivity('Power off').then(function () {
                             resolve(result);
 
                         })
@@ -48,7 +49,7 @@ function makeCoffee() {
         brewing.write(1, function () {
             console.log("Make Coffee");
             brewing.writeSync(0);
-            logActivty('Coffee made').then(function () {
+            logActivity('Coffee made').then(function () {
                 resolve();
             })
 
@@ -64,27 +65,45 @@ function getStatus(){
     })
 }
 
-function logActivty(type){
+function logActivity(type){
 
     return new Promise((resolve, reject) => {
-        let activity = {
-            time: Date.now(),
-            action: type
-        };
-        console.log(activity);
 
-        smartCoffee.findOne({}, {}, { sort: { 'created_at' : 1 } }, function(err, result) {
-            result.log.push(activity);
-            result.save().then(result => {
-                resolve();
-            })
+        new activities({
+            action: type
+        }).save().then(function () {
+            resolve();
         });
 
     })
 }
 
+function getActivities() {
+    return new Promise((resolve, reject) => {
+        activities.find().then(results => {
+            resolve(results);
+        })
+    })
+}
+function countCoffees(){
+
+    return new Promise((resolve, reject) => {
+
+        activities.find({action: 'Coffee made'}).then(results => {
+            console.log(results);
+
+            let json = {
+                drunkenCoffees: results.length,
+                coffees: results
+            };
+            resolve(json)
+        })
+    })
+}
 module.exports = {
     turnPower,
     makeCoffee,
-    getStatus
+    getStatus,
+    getActivities,
+    countCoffees
 };

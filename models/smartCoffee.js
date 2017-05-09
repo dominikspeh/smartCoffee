@@ -2,9 +2,7 @@ const mongoose = require('mongoose');
 
 const coffeeSchema = new mongoose.Schema({
     name: String,
-    isOn: Boolean,
-    log: Array
-
+    isOn: Boolean
 }, { timestamps: true });
 
 
@@ -18,8 +16,6 @@ smartCoffee.find(function (err, data) {
     new smartCoffee({
         name: "Senseo",
         isOn : false,
-
-
     }).save();
 
 
