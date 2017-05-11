@@ -3,6 +3,35 @@ angular.module('Coffee', [])
 
         getStatus();
 
+        google.charts.load('current', {packages: ['corechart', 'line']});
+        google.charts.setOnLoadCallback(drawLineColors);
+
+        function drawLineColors() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('date', 'X');
+            data.addColumn('number', 'Drunken Coffees');
+
+            data.addRows([
+                [new Date('May 7, 2017'), 1],  [new Date('May 6, 2017'), 3],  [new Date('May 5, 2017'), 2],
+
+            ]);
+
+            var options = {
+                hAxis: {
+                    format: 'd.M.yy',
+                    gridlines: {count: 15}
+
+                },
+                vAxis: {
+                    title: 'Cups of Coffee'
+                },
+                colors: ['#34495e']
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('chart'));
+            chart.draw(data, options);
+        }
+
         $scope.coffeeMachineActive = false;
         $scope.turnCoffeeMaschine = function () {
             $scope.blocked = true;

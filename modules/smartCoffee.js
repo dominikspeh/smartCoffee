@@ -85,21 +85,24 @@ function getActivities() {
         })
     })
 }
+
 function countCoffees(){
 
     return new Promise((resolve, reject) => {
-
         activities.find({action: 'Coffee made'}).then(results => {
-            console.log(results);
 
             let json = {
                 drunkenCoffees: results.length,
                 coffees: results
             };
+
+
             resolve(json)
         })
+
     })
 }
+
 module.exports = {
     turnPower,
     makeCoffee,
