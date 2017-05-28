@@ -1,6 +1,70 @@
-angular.module('Coffee', [])
-    .controller('CoffeeCtrl', function($scope, $http, $timeout, $interval) {
+angular.module('Coffee', ['btford.socket-io'])
 
+    .factory('socket', function (socketFactory) {
+        let mySocket = socketFactory();
+        mySocket.forward('error');
+        return mySocket;
+    })
+    .controller('CoffeeCtrl', function($scope, $http, $timeout, $interval, socket) {
+
+        // TURN COFFEE  EVERYWHERE
+        socket.on('send:turnCoffee', function (data) {
+            console.log("Coffee turned");
+            $scope.blocked = true;
+
+
+            if(!$scope.coffeeMachineActive){
+                $scope.coffeeMachineWarming = true;
+
+                $scope.status = 0;
+                $interval(function () {
+                    $scope.status++
+                },1000);
+
+                $scope.getPercentage = function () {
+                    return (1.7 * $scope.status).toFixed(2);
+                };
+
+                $timeout(function () {
+                    getStatus();
+                    $scope.coffeeMachineActive = true;
+                    $scope.coffeeMachineWarming = false;
+                    $scope.blocked = false;
+                    $interval.cancel()
+                },70000)
+
+            }
+            else {
+                $scope.coffeeMachineActive = false;
+                $timeout(function () {
+                    $scope.coffeeMachineWarming = false;
+                    $scope.blocked = false;
+                    getStatus();
+                },5000)
+
+            }
+        });
+
+        socket.on('send:makeCoffee', function (data) {
+            console.log("Coffee made");
+
+            $scope.coffeeInProcess = true;
+            $scope.statusBrew = 0;
+            $interval(function () {
+                $scope.statusBrew++
+            },1000);
+
+            $scope.getPercentageBrew = function () {
+                return (5 * $scope.statusBrew).toFixed(2);
+            };
+
+            $timeout(function () {
+                $scope.coffeeInProcess = false;
+                $interval.cancel();
+                $scope.statusBrew = 0;
+                getStatus();
+            },20000)
+        });
         getStatus();
 
         google.charts.load('current', {packages: ['corechart', 'line']});
@@ -33,6 +97,7 @@ angular.module('Coffee', [])
         }
 
         $scope.coffeeMachineActive = false;
+
         $scope.turnCoffeeMaschine = function () {
             $scope.blocked = true;
 
@@ -40,34 +105,14 @@ angular.module('Coffee', [])
             })
                 .then(
                     function(response){
-
-                        if(!$scope.coffeeMachineActive){
-                            $scope.coffeeMachineWarming = true;
-
-                            $scope.status = 0;
-                            $interval(function () {
-                                $scope.status++
-                            },1000);
-
-                            $scope.getPercentage = function () {
-                                return (1.7 * $scope.status).toFixed(2);
-                            };
+                        if($scope.coffeeMachineActive){
+                            $scope.coffeeMachineActive = false;
 
                             $timeout(function () {
-                                getStatus();
-                                $scope.coffeeMachineActive = true;
                                 $scope.coffeeMachineWarming = false;
                                 $scope.blocked = false;
-
-                                $interval.cancel()
-                            },60000)
-
-                        }
-                        else {
-                            $scope.coffeeMachineActive = false;
-                            $timeout(function () {
                                 getStatus();
-                            },1000)
+                            }, 1000)
 
                         }
 
@@ -81,25 +126,7 @@ angular.module('Coffee', [])
             $http.get('/coffee/brew', {
             })
                 .then(
-                    function(response){
-                        $scope.coffeeInProcess = true;
-                        $scope.statusBrew = 0;
-                        $interval(function () {
-                            $scope.statusBrew++
-                        },1000);
-
-                        $scope.getPercentageBrew = function () {
-                            return (5 * $scope.statusBrew).toFixed(2);
-                        };
-
-                        $timeout(function () {
-                            $scope.coffeeInProcess = false;
-                            $interval.cancel();
-                            $scope.statusBrew = 0;
-                            getStatus();
-                        },20000)
-
-                    },
+                    function(response){},
                     function(response){
                         console.log("error")
                     }

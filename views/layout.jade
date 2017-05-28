@@ -6,13 +6,15 @@ html(lang="de")
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
 
+    script(src='/socket.io/socket.io.js')
     script(src="/javascripts/angular.min.js")
     script(src="/javascripts/jquery-3.2.1.min.js")
     script(src="/javascripts/bootstrap.min.js")
     script(type='text/javascript', src='https://www.gstatic.com/charts/loader.js')
 
-
+    script(type='text/javascript', src='/javascripts/socket.min.js')
     script(src="/javascripts/controllers/coffee.js")
+
 
   body(ng-app="Coffee")
     include sidenav

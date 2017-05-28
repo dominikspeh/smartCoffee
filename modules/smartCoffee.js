@@ -103,10 +103,29 @@ function countCoffees(){
     })
 }
 
+function getActivitiesByDay() {
+    let startDate = new Date("2017-05-20");
+    let endDate = new Date("2017-05-26");
+
+    return new Promise((resolve, reject) => {
+        activities.aggregate(
+            {$group: {
+                _id: {$substr: ['$createdAt', 5, 2]},
+                numberofbookings: {$sum: 1}
+            }},
+            function (err, res)
+            { if (err) ; // TODO handle error
+                console.log(res);
+                resolve(res);
+            });
+    });
+}
+
 module.exports = {
     turnPower,
     makeCoffee,
     getStatus,
     getActivities,
-    countCoffees
+    countCoffees,
+    getActivitiesByDay
 };
