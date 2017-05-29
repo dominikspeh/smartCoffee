@@ -108,16 +108,39 @@ function getActivitiesByDay() {
     let endDate = new Date("2017-05-26");
 
     return new Promise((resolve, reject) => {
-        activities.aggregate(
-            {$group: {
-                _id: {$substr: ['$createdAt', 5, 2]},
-                numberofbookings: {$sum: 1}
-            }},
-            function (err, res)
-            { if (err) ; // TODO handle error
-                console.log(res);
-                resolve(res);
-            });
+        activities.aggregate({
+            $match: {
+                createdAt: {
+                    $gte: new Date("2016-01-01")
+                },
+                action : "Coffee made"
+            }
+        },
+            {
+            $group: {
+                _id: {
+                    "year":  { "$year": "$createdAt" },
+                    "month": { "$month": "$createdAt" },
+                    "day":   { "$dayOfMonth": "$createdAt" },
+                    "action": "$action",
+                },
+                "createdAt": { "$first": "$createdAt" },
+                count:{$sum: 1}
+            }
+        },
+            {
+                $sort: {
+                    "createdAt": -1
+                }
+            }).exec(function(err,data){
+            if (err) {
+                console.log('Error Fetching model');
+                console.log(err);
+            } else {
+                console.log(data);
+                resolve(data);
+            }
+        });
     });
 }
 
